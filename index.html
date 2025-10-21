@@ -142,3 +142,104 @@ textarea {
   border-radius: 10px;
   animation: rgbBorder 3s linear infinite;
 }
+
+.copy-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--btn-color);
+  border-radius: 8px;
+  z-index: -1;
+}
+
+/* Hover glow */
+.copy-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(255,255,255,0.8);
+}
+
+/* Responsive wrapper for each word + copy */
+.word-wrapper {
+  display: flex;
+  gap: 5px;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  z-index: 10;
+}
+</style>
+</head>
+<body>
+<div class="rgb-border">
+  <button class="theme-toggle" id="theme-toggle">🌑</button>
+  <h1>Word Collection</h1>
+
+  <div class="edit-section">
+    <label for="word-input">Enter words (space or newline separated):</label>
+    <textarea id="word-input" rows="4" placeholder="Apple Banana Orange Mango"></textarea>
+    <button id="generate-btn">Generate</button>
+  </div>
+
+  <div class="list-container" id="word-container"></div>
+</div>
+
+<script>
+// ---------- Theme Switch ----------
+const toggleBtn = document.getElementById('theme-toggle');
+const currentTheme = localStorage.getItem('theme') || 'dark';
+document.body.setAttribute('data-theme', currentTheme);
+toggleBtn.textContent = currentTheme === 'dark' ? '🌕' : '🌑';
+toggleBtn.onclick = () => {
+  const newTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  toggleBtn.textContent = newTheme === 'dark' ? '🌕' : '🌑';
+};
+
+// ---------- Generate Words with Copy ----------
+const generateBtn = document.getElementById("generate-btn");
+const wordInput = document.getElementById("word-input");
+const container = document.getElementById("word-container");
+
+generateBtn.addEventListener("click", () => {
+  const text = wordInput.value.trim();
+  if (!text) return;
+
+  const words = text.split(/\s+/);
+  container.innerHTML = "";
+
+  const grid = document.createElement("div");
+  grid.className = "word-grid";
+
+  words.forEach(word => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "word-wrapper";
+
+    const wordBox = document.createElement("div");
+    wordBox.className = "word-box";
+    wordBox.textContent = word;
+
+    const btn = document.createElement("button");
+    btn.className = "copy-btn";
+    btn.textContent = "Copy";
+
+    btn.addEventListener("click", () => {
+      navigator.clipboard.writeText(word);
+    });
+
+    wrapper.appendChild(wordBox);
+    wrapper.appendChild(btn);
+    grid.appendChild(wrapper);
+  });
+
+  container.appendChild(grid);
+});
+</script>
+</body>
+</html>
