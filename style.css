@@ -2,14 +2,12 @@
 :root {
   --bg-color: #ffffff;
   --text-color: #000000;
-  --card-color: #f4f4f4;
   --btn-color: #007bff;
 }
 
 [data-theme="dark"] {
   --bg-color: #000000;
   --text-color: #ffffff;
-  --card-color: #121212;
   --btn-color: #00bfff;
 }
 
@@ -25,13 +23,12 @@ body {
 
 h1 {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 h2 {
-  margin-top: 40px;
+  margin-top: 20px;
   text-align: center;
-  font-size: 1.4rem;
 }
 
 .list-container {
@@ -39,58 +36,31 @@ h2 {
   margin: 0 auto;
 }
 
-.word-list {
-  margin-top: 15px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  align-items: center;
-  padding: 10px 15px;
-  background: var(--card-color);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.row:nth-child(even) {
-  opacity: 0.95;
-}
-
-/* ---------- Fire Border ---------- */
-.fire-border {
+/* ---------- RGB Animated Border for Container ---------- */
+.rgb-border {
   position: relative;
-  border-radius: 20px;
   padding: 30px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 0 30px rgba(255, 80, 0, 0.5);
 }
 
-.fire-border::before {
+.rgb-border::before {
   content: "";
   position: absolute;
   top: -3px;
   left: -3px;
   right: -3px;
   bottom: -3px;
-  background: linear-gradient(
-    45deg,
-    #ff0000,
-    #ff7300,
-    #fffb00,
-    #ff7300,
-    #ff0000
+  background: conic-gradient(
+    red, orange, yellow, green, blue, indigo, violet, red
   );
-  background-size: 400%;
   z-index: -1;
   border-radius: 20px;
-  animation: fireMove 5s linear infinite;
+  animation: rgbBorder 4s linear infinite;
   filter: blur(3px);
 }
 
-.fire-border::after {
+.rgb-border::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -99,23 +69,30 @@ h2 {
   z-index: -1;
 }
 
-@keyframes fireMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes rgbBorder {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* ---------- Theme Toggle Button ---------- */
-.theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
+/* ---------- Word Grid 2 Columns ---------- */
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.word-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--btn-color);
+  padding: 10px 15px;
   border-radius: 8px;
-  font-size: 16px;
-  z-index: 10;
+  color: #fff;
 }
 
-/* ---------- RGB Animated Button Border ---------- */
+/* ---------- Buttons ---------- */
 button {
   position: relative;
   border: 2px solid transparent;
@@ -152,6 +129,7 @@ button::after {
   z-index: -1;
 }
 
+/* Glow on hover */
 button:hover {
   transform: scale(1.05);
   box-shadow: 0 0 12px rgba(255,255,255,0.8);
@@ -160,4 +138,14 @@ button:hover {
 @keyframes rgbBorder {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  z-index: 10;
 }
