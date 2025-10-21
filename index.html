@@ -1,39 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Word Lists</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="rgb-border">
-    <button class="theme-toggle" id="theme-toggle">🌑</button>
-    <h1>Word Collection</h1>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Copy Grid</title>
+<style>
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --btn-color: #007bff;
+}
 
-    <div class="list-container">
-      <h2>Name of Fruits</h2>
-      <div class="word-grid">
-        <div class="word-item">
-          <span>Apple</span>
-          <button class="copy-btn">Copy</button>
-        </div>
-        <div class="word-item">
-          <span>Banana</span>
-          <button class="copy-btn">Copy</button>
-        </div>
-        <div class="word-item">
-          <span>Orange</span>
-          <button class="copy-btn">Copy</button>
-        </div>
-        <div class="word-item">
-          <span>Mango</span>
-          <button class="copy-btn">Copy</button>
-        </div>
-      </div>
-    </div>
-  </div>
+[data-theme="dark"] {
+  --bg-color: #000000;
+  --text-color: #ffffff;
+  --btn-color: #00bfff;
+}
 
-  <script src="script.js"></script>
-</body>
-</html>
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 20px;
+  transition: background 0.3s, color 0.3s;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.edit-section {
+  max-width: 900px;
+  margin: 0 auto 20px;
+  text-align: center;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+#generate-btn {
+  margin-top: 10px;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+/* RGB Animated Border for Container */
+.rgb-border {
+  position: relative;
+  padding: 30px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.rgb-border::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: conic-gradient(
+    red, orange, yellow, green, blue, indigo, violet, red
+  );
+  z-index: -1;
+  border-radius: 20px;
+  animation: rgbBorder 4s linear infinite;
+  filter: blur(3px);
+}
+
+.rgb-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--bg-color);
+  border-radius: 18px;
+  z-index: -1;
+}
+
+@keyframes rgbBorder {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Word grid */
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* Word box with thin RGB border */
+.word-box {
+  padding: 10px;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: 500;
+  position: relative;
+}
+
+.word-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  border: 2px solid;
+  border-image: conic-gradient(red, orange, yellow, green, blue, indigo, violet, red) 1;
+  pointer-events: none;
+  animation: rgbBorder 3s linear infinite;
+}
+
+/* Copy button */
+.copy-btn {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: var(--btn-color);
+  color: #fff;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.copy-btn::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: conic-gradient(red, orange, yellow, green, blue, indigo, violet, red);
+  z-index: -1;
+  border-radius: 10px;
+  animation: rgbBorder 3s linear infinite;
+}
