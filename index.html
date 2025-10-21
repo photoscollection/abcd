@@ -3,87 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Word Copy Grid</title>
+<title>Neon Copy Grid</title>
 <style>
 :root {
-  --bg-color: #ffffff;
-  --text-color: #000000;
-  --btn-color: #007bff;
-}
-
-[data-theme="dark"] {
-  --bg-color: #000000;
-  --text-color: #ffffff;
-  --btn-color: #00bfff;
+  --bg-color: #111;
+  --text-color: #fff;
+  --btn-color: #222;
+  --btn-hover: #444;
+  --border-thin: 3px;
+  --border-speed: 3s;
+  --glow-color: 0,255,255;
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
   background: var(--bg-color);
   color: var(--text-color);
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
-  transition: background 0.3s, color 0.3s;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0,255,255,0.7);
 }
 
-/* RGB Animated Border for Container */
-.rgb-border {
-  position: relative;
-  padding: 30px;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.rgb-border::before {
-  content: "";
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  background: conic-gradient(
-    red, orange, yellow, green, blue, indigo, violet, red
-  );
-  z-index: -1;
-  border-radius: 20px;
-  animation: rgbBorder 4s linear infinite;
-  filter: blur(3px);
-}
-
-.rgb-border::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--bg-color);
-  border-radius: 18px;
-  z-index: -1;
-}
-
-@keyframes rgbBorder {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Word grid */
 .word-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 15px;
-  margin-top: 20px;
+  width: 100%;
+  max-width: 1000px;
 }
 
-/* Word box with thin RGB border */
+.word-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Box with moving RGB neon border */
 .word-box {
-  padding: 10px;
+  flex: 1;
   text-align: center;
-  border-radius: 8px;
   font-weight: 500;
+  padding: 10px;
+  border-radius: 8px;
   position: relative;
+  background: #111;
+  z-index: 0;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(var(--glow-color),0.5);
+  word-wrap: break-word;
 }
 
 .word-box::before {
@@ -91,89 +68,100 @@ h1 {
   position: absolute;
   inset: 0;
   border-radius: 8px;
-  border: 2px solid;
-  border-image: conic-gradient(red, orange, yellow, green, blue, indigo, violet, red) 1;
-  pointer-events: none;
-  animation: rgbBorder 3s linear infinite;
+  padding: var(--border-thin);
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  animation: moveBorder var(--border-speed) linear infinite;
+  box-shadow: 0 0 8px rgba(var(--glow-color),0.8);
 }
 
-/* Copy button */
+/* Copy Button with neon RGB border */
 .copy-btn {
-  padding: 10px 15px;
+  padding: 10px 14px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   background: var(--btn-color);
   color: #fff;
+  font-weight: 500;
   position: relative;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  overflow: hidden;
+  box-shadow: 0 0 5px rgba(var(--glow-color),0.5);
+}
+
+.copy-btn:hover {
+  background: var(--btn-hover);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(var(--glow-color),1);
 }
 
 .copy-btn::before {
   content: "";
   position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: conic-gradient(red, orange, yellow, green, blue, indigo, violet, red);
-  z-index: -1;
+  inset: -2px;
   border-radius: 10px;
-  animation: rgbBorder 3s linear infinite;
-}
-
-.copy-btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--btn-color);
-  border-radius: 8px;
+  padding: 2px;
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  animation: moveBorder var(--border-speed) linear infinite;
   z-index: -1;
+  box-shadow: 0 0 8px rgba(var(--glow-color),0.7);
 }
 
-/* Hover glow */
-.copy-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px rgba(255,255,255,0.8);
+@keyframes moveBorder {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 0%; }
 }
 
-/* Responsive wrapper for each word + copy */
-.word-wrapper {
-  display: flex;
-  gap: 5px;
+/* Responsive adjustments */
+@media(max-width: 600px){
+  .word-wrapper {
+    flex-direction: column;
+    gap: 5px;
+  }
 }
 </style>
 </head>
 <body>
-<div class="rgb-border">
-  <h1>Word Collection</h1>
-  <div class="list-container" id="word-container"></div>
-</div>
+
+<h1>Neon Copy Grid</h1>
+<div class="list-container" id="word-container"></div>
 
 <script>
-// ---------- Edit words here ----------
-const words = ["Apple", "Banana", "Orange", "Mango", "Grapes", "Pineapple", "Papaya", "Strawberry"];
+// ----- Each entry is a box, can contain multiple words / sentence -----
+const words = [
+  "Man go hk kj",
+  "Hello world!",
+  "This is a full sentence",
+  "Copy all text in one click"
+];
 
-// ---------- Generate Words with Copy ----------
+// ----- Generate grid -----
 const container = document.getElementById("word-container");
-
 const grid = document.createElement("div");
 grid.className = "word-grid";
 
-words.forEach(word => {
+words.forEach(content => {
   const wrapper = document.createElement("div");
   wrapper.className = "word-wrapper";
 
   const wordBox = document.createElement("div");
   wordBox.className = "word-box";
-  wordBox.textContent = word;
+  wordBox.textContent = content;
 
   const btn = document.createElement("button");
   btn.className = "copy-btn";
   btn.textContent = "Copy";
 
   btn.addEventListener("click", () => {
-    navigator.clipboard.writeText(word);
+    navigator.clipboard.writeText(content);
   });
 
   wrapper.appendChild(wordBox);
@@ -183,5 +171,6 @@ words.forEach(word => {
 
 container.appendChild(grid);
 </script>
+
 </body>
 </html>
