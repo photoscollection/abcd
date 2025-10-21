@@ -31,27 +31,6 @@ h1 {
   margin-bottom: 20px;
 }
 
-.edit-section {
-  max-width: 900px;
-  margin: 0 auto 20px;
-  text-align: center;
-}
-
-textarea {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  resize: vertical;
-}
-
-#generate-btn {
-  margin-top: 10px;
-  padding: 8px 15px;
-  cursor: pointer;
-}
-
 /* RGB Animated Border for Container */
 .rgb-border {
   position: relative;
@@ -163,83 +142,46 @@ textarea {
   display: flex;
   gap: 5px;
 }
-
-/* Theme Toggle */
-.theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  border-radius: 8px;
-  font-size: 16px;
-  z-index: 10;
-}
 </style>
 </head>
 <body>
 <div class="rgb-border">
-  <button class="theme-toggle" id="theme-toggle">🌑</button>
   <h1>Word Collection</h1>
-
-  <div class="edit-section">
-    <label for="word-input">Enter words (space or newline separated):</label>
-    <textarea id="word-input" rows="4" placeholder="Apple Banana Orange Mango"></textarea>
-    <button id="generate-btn">Generate</button>
-  </div>
-
   <div class="list-container" id="word-container"></div>
 </div>
 
 <script>
-// ---------- Theme Switch ----------
-const toggleBtn = document.getElementById('theme-toggle');
-const currentTheme = localStorage.getItem('theme') || 'dark';
-document.body.setAttribute('data-theme', currentTheme);
-toggleBtn.textContent = currentTheme === 'dark' ? '🌕' : '🌑';
-toggleBtn.onclick = () => {
-  const newTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  document.body.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
-  toggleBtn.textContent = newTheme === 'dark' ? '🌕' : '🌑';
-};
+// ---------- Edit words here ----------
+const words = ["Apple", "Banana", "Orange", "Mango", "Grapes", "Pineapple", "Papaya", "Strawberry"];
 
 // ---------- Generate Words with Copy ----------
-const generateBtn = document.getElementById("generate-btn");
-const wordInput = document.getElementById("word-input");
 const container = document.getElementById("word-container");
 
-generateBtn.addEventListener("click", () => {
-  const text = wordInput.value.trim();
-  if (!text) return;
+const grid = document.createElement("div");
+grid.className = "word-grid";
 
-  const words = text.split(/\s+/);
-  container.innerHTML = "";
+words.forEach(word => {
+  const wrapper = document.createElement("div");
+  wrapper.className = "word-wrapper";
 
-  const grid = document.createElement("div");
-  grid.className = "word-grid";
+  const wordBox = document.createElement("div");
+  wordBox.className = "word-box";
+  wordBox.textContent = word;
 
-  words.forEach(word => {
-    const wrapper = document.createElement("div");
-    wrapper.className = "word-wrapper";
+  const btn = document.createElement("button");
+  btn.className = "copy-btn";
+  btn.textContent = "Copy";
 
-    const wordBox = document.createElement("div");
-    wordBox.className = "word-box";
-    wordBox.textContent = word;
-
-    const btn = document.createElement("button");
-    btn.className = "copy-btn";
-    btn.textContent = "Copy";
-
-    btn.addEventListener("click", () => {
-      navigator.clipboard.writeText(word);
-    });
-
-    wrapper.appendChild(wordBox);
-    wrapper.appendChild(btn);
-    grid.appendChild(wrapper);
+  btn.addEventListener("click", () => {
+    navigator.clipboard.writeText(word);
   });
 
-  container.appendChild(grid);
+  wrapper.appendChild(wordBox);
+  wrapper.appendChild(btn);
+  grid.appendChild(wrapper);
 });
+
+container.appendChild(grid);
 </script>
 </body>
 </html>
